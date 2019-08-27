@@ -1,1 +1,1 @@
-# javascript-toy-prolems
+# javascript-toy-problems
