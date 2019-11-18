@@ -33,49 +33,36 @@ function Dictionary(words) {
 }
 
 Dictionary.prototype.findMostSimilar = function (term) {
-   if (this.words.includes(term)) return term;
-   let highScore = 0;
-   let bestMatch = '';
-   for (let word of this.words) {
-      let basicDiff = this.basicDiff(term, word);
-      let continualDiff = this.continualDiff(term, word);
-      let diffScore = basicDiff < continualDiff ? basicDiff : continualDiff;
-      if (diffScore < highScore || bestMatch === '') {
-         highScore = diffScore;
-         bestMatch = word;
+   let levenshtein = function (word) {
+      if (word === term) {
+         return 0
       }
-   }
-   return bestMatch;
-}
-
-Dictionary.prototype.basicDiff = function (term, word) {
-   let diffScore = 0;
-   for (let i = 0; i < term.length; i++) {
-      let termChar = term[i];
-      let wordChar = word[i];
-      if (termChar !== wordChar) {
-         diffScore++;
+      if (term.length === 0) {
+         return word.length
       }
-   }
-   return diffScore;
-}
-
-Dictionary.prototype.continualDiff = function (term, word) {
-   let diffScore = term.length;
-   if (term.length === word.length) return diffScore;
-   let sizeIndex = Math.abs(word.length - term.length) + 1;
-   let longer = word.length >= term.length ? word : term;
-   let shorter = longer === word ? term : word;
-   for (let s = 0; s < sizeIndex; s++) {
-      let currComp = shorter.length + sizeIndex;
-      for (let i = 0; i < shorter.length; i++) {
-         let shortC = shorter[i];
-         let longC = longer[i + s];
-         if (shortC === longC) currComp--;
+      if (word.length === 0) {
+         return term.length
       }
-      if (currComp < diffScore) diffScore = currComp;
+      let v0 = new Array(term.length + 1);
+      let v1 = new Array(term.length + 1);
+      for (let i = 0; i < v0.length; i++) {
+         v0[i] = i;
+      }
+      for (let i = 0; i < word.length; i++) {
+         v1[0] = i + 1;
+         for (let j = 0; j < term.length; j++) {
+            let cost = word.charAt(i) === term.charAt(j) ? 0 : 1;
+            v1[j + 1] = Math.min(v1[j] + 1, v0[j + 1] + 1, v0[j] + cost);
+         }
+         let tmp = v0;
+         v0 = v1;
+         v1 = tmp;
+      }
+      return v0[term.length];
    }
-   return diffScore;
+   return this.words.sort(function (a, b) {
+      return levenshtein(a) - levenshtein(b)
+   })[0];
 }
 
 // fruits = new Dictionary(['cherry', 'pineapple', 'melon', 'strawberry', 'raspberry']);
