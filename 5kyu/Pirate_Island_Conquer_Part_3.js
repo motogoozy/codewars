@@ -25,14 +25,14 @@ You are a captain on a pirate ship. You are looking to conquer islands, so that 
 
 
 Map
-								y
+												y
          0    1    2    3    4    5    6    7
 
 	0    ['~', '~', '~', '~', '~', '~', '~', '~'],
 	1    ['~', '~', '~', '~', 's', 'p', '~', '~'],
 	2    ['~', '~', '~', '~', '~', '~', '~', '~'],
 	3    ['p', 't', 'u', '~', '~', '~', '~', '~'],
-	x 4    ['~', '~', '~', '~', 'm', '~', '~', '~'],
+x 4    ['~', '~', '~', '~', 'm', '~', '~', '~'],
 	5    ['~', '~', '~', '~', '~', '~', '~', '~'],
 	6    ['~', '~', '~', '~', '~', '~', '~', '~'],
 	7    ['~', '~', '~', '~', '~', '~', '~', '~']];
@@ -111,7 +111,7 @@ function conquerIsland(map) {
 	let pLocations = [];
 	let uLocations = [];
 	let mLocations = [];
-		let bestU = [];
+	let bestU = [];
 	let bestM = [];
 	
 	const getDistance = (homeCoordinates, islandCoordinates) => {
