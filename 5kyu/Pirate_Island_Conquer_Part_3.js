@@ -23,7 +23,6 @@ If there is a tie, conquer the island with more treasures!
 Complete Instructions
 You are a captain on a pirate ship. You are looking to conquer islands, so that you can do lots of piratey stuff on those islands. Let's take a look at your pirate map of the area:
 
-
 Map
 												y
          0    1    2    3    4    5    6    7
