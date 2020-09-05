@@ -23,6 +23,7 @@ If there is a tie, conquer the island with more treasures!
 Complete Instructions
 You are a captain on a pirate ship. You are looking to conquer islands, so that you can do lots of piratey stuff on those islands. Let's take a look at your pirate map of the area:
 
+
 Map
 												y
          0    1    2    3    4    5    6    7
@@ -110,9 +111,11 @@ function conquerIsland(map) {
 	let pLocations = [];
 	let uLocations = [];
 	let mLocations = [];
+	let priorityLocations;
 	let bestU = [];
 	let bestM = [];
-	
+	let bestPriority = [];
+
 	const getDistance = (homeCoordinates, islandCoordinates) => {
 		let xDistance = Math.abs(homeCoordinates[0] - islandCoordinates[0]);
 		let yDistance = Math.abs(homeCoordinates[1] - islandCoordinates[1]);
@@ -153,75 +156,49 @@ function conquerIsland(map) {
 		});
 	});
 
-	pLocations.forEach(p => {
-		if (uLocations.length > 0) {
-			uLocations.forEach(u => {
-				let uObj = {
-					location: u,
-					distanceFromP: getDistance(p, u),
-					sharks: getCount('s', u),
-					treasures: getCount('t', u)
-				};
+	if (uLocations.length === 0 && mLocations.length === 0) return [];
+	
+	// u islands take priority over m islands
+	if (uLocations.length > 0) {
+		priorityLocations = uLocations;
+		bestPriority = bestU;
+	} else if (mLocations.length > 0) {
+		priorityLocations = mLocations;
+		bestPriority = bestM;
+	}
 
-				if (bestU.length === 0) {
-					bestU.push(uObj);
-				} else {
-					if (uObj.sharks < bestU[0].sharks) {
-						bestU = [uObj];
-					} else if (uObj.sharks === bestU[0].sharks) {
-						if (uObj.distanceFromP < bestU[0].distanceFromP) {
-							bestU = [uObj];
-						} else if (uObj.distanceFromP === bestU[0].distanceFromP) {
-							if (uObj.treasures > bestU[0].treasures) {
-								bestU = [uObj];
-							} else if (uObj.treasures === bestU[0].treasures) {
-								if (!bestU.some(e => JSON.stringify(e.location) === JSON.stringify(uObj.location))) {
-									bestU.push(uObj);
-								}
+	pLocations.forEach(p => {
+		priorityLocations.forEach(e => {
+			let eObj = {
+				location: e,
+				distanceFromP: getDistance(p, e),
+				sharks: getCount('s', e),
+				treasures: getCount('t', e)
+			};
+
+			if (bestPriority.length === 0) {
+				bestPriority.push(eObj);
+			} else {
+				if (eObj.sharks < bestPriority[0].sharks) {
+					bestPriority = [eObj];
+				} else if (eObj.sharks === bestPriority[0].sharks) {
+					if (eObj.distanceFromP < bestPriority[0].distanceFromP) {
+						bestPriority = [eObj];
+					} else if (eObj.distanceFromP === bestPriority[0].distanceFromP) {
+						if (eObj.treasures > bestPriority[0].treasures) {
+							bestPriority = [eObj];
+						} else if (eObj.treasures === bestPriority[0].treasures) {
+							if (!bestPriority.some(e => JSON.stringify(e.location) === JSON.stringify(eObj.location))) {
+								bestPriority.push(eObj);
 							}
 						}
 					}
 				}
-			})
-		} else if (mLocations.length > 0) {
-			mLocations.forEach(m => {
-				let mObj = {
-					location: m,
-					distanceFromP: getDistance(p, m),
-					sharks: getCount('s', m),
-					treasures: getCount('t', m)
-				}
-				if (bestM.length === 0) {
-					bestM.push(mObj);
-				} else {
-					if (mObj.sharks < bestM[0].sharks) {
-						bestM = [mObj];
-					} else if (mObj.sharks === bestM[0].sharks) {
-						if (mObj.distanceFromP < bestM[0].distanceFromP) {
-							bestM = [mObj];
-						} else if (mObj.distanceFromP === bestM[0].distanceFromP) {
-							if (mObj.treasures > bestM[0].treasures) {
-								bestM = [mObj];
-							} else if (mObj.treasures === bestM[0].treasures) {
-								if (!bestM.some(e => JSON.stringify(e.location) === JSON.stringify(mObj.location))) {
-									bestM.push(mObj);
-								}
-							}
-						}
-					}
-				}
-			})
-		}
+			}
+		})
 	})
 
-	let list;
-	if (bestU.length > 0) {
-		list = bestU;
-	} else if (bestM.length > 0) {
-		list = bestM;
-	} else return [];
-
-	let coordinateList = list.map(item => item.location);
+	let coordinateList = bestPriority.map(item => item.location);
 	if (coordinateList.length === 1) {
 		return coordinateList[0];
 	} else {
@@ -233,4 +210,4 @@ function conquerIsland(map) {
 	}
 };
 
-conquerIsland(map);
+console.log(conquerIsland(map));
