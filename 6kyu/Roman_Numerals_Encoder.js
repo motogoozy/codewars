@@ -42,13 +42,14 @@ function solution(num) {
   let str = '';
 
   for (let key of Object.keys(roman)) {
-    let q = Math.floor(num / roman[key]);
-    num -= q * roman[key];
-    str += key.repeat(q);
+    let count = Math.floor(num / roman[key]);
+    num -= count * roman[key];
+    str += key.repeat(count);
   }
 
   return str;
 }
 
 solution(2008)
+
 
