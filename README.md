@@ -1,1 +1,1 @@
-# javascript-toy-problems
+Algorithms & Brainteasers from www.codewars.com
