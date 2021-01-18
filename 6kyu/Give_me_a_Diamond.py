@@ -49,10 +49,9 @@ def diamond(n):
 			new_line = ' ' + new_line
 
 		new_line += '\n'
-		spaces = spaces + 1
-		
 		result = new_line + result
 		result = result + new_line
+		spaces = spaces + 1
 		count -= 2
 
 	return result
