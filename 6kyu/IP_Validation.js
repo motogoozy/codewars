@@ -22,7 +22,6 @@ Note that leading zeros (e.g. 01.02.03.04) are considered invalid.
 function isValidIP(str) {
   const nums = '1234567890'.split('');
   const arr = str.split('.');
-  let isValid = true;
   
   if (arr.length !== 4) return false;
   
