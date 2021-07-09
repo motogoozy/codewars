@@ -12,11 +12,6 @@ maskify(                "") ==                 ""
 maskify("Skippy")                                   == "##ippy"
 maskify("Nananananananananananananananana Batman!") == "####################################man!" */
 
-function maskify(cc) {
-   let cardNumber = cc.split('')
-   let lastFour = cardNumber.splice(-4)
-   let newNumber = cardNumber.map(letter => '#');
-   return [...newNumber, ...lastFour].join('')
-}
+const maskify = cc => cc.split('').map((char, idx) => idx < cc.length - 4 ? '#' : char).join('');
 
-maskify('4556364607935616')
+maskify('4556364607935616');
