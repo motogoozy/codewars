@@ -4,17 +4,15 @@ A pangram is a sentence that contains every single letter of the alphabet at lea
 Given a string, detect whether or not it is a pangram. Return True if it is, False if not. Ignore numbers and punctuation.
 */
 
-function isPangram(string) {
-   let alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
-   let isPangram = true;
-   for (let i = 0; i < alphabet.length; i++) {
-      if (!string.toLowerCase().includes(alphabet[i])) {
-         isPangram = false;
-         break;
-      }
-   }
-   return isPangram;
+function isPangram(str){
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+  
+  str = str.toLowerCase();
+  const missingChars = alphabet.filter(char => !str.includes(char.toLowerCase()))
+  
+  return missingChars.length === 0;
 }
+
 
 isPangram('The quick brown fox jumps over the lazy dog.');
 // isPangram('This is not a pangram.');
