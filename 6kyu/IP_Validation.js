@@ -20,39 +20,21 @@ Note that leading zeros (e.g. 01.02.03.04) are considered invalid.
 */
 
 function isValidIP(str) {
-   let nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-   let arr = str.split('.');
-   let isValid = true;
-
-   if (arr.length !== 4) return false;
-
-   for (let i = 0; i < arr.length; i++) {
-      let charArr = arr[i].split('');
-      if (charArr.length === 0) {
-         isValid = false;
-         break;
-      };
-
-      for (let j = 0; j < charArr.length; j++) {
-         if (!nums.includes(parseInt(charArr[j]))) {
-            isValid = false;
-            break;
-         }
-      };
-
-      if (arr[i].startsWith('0') && arr[i].length > 1) {
-         isValid = false;
-         break;
-      };
-
-      let num = parseInt(arr[i]);
-      if (num === NaN || num < 0 || num > 255) {
-         isValid = false;
-         break;
-      };
-   };
-
-   return isValid;
+  const nums = '1234567890'.split('');
+  const arr = str.split('.');
+  let isValid = true;
+  
+  if (arr.length !== 4) return false;
+  
+  return arr.every(sub => {
+    if (
+      sub.length === 0 || // is empty
+      sub.length !== 1 && sub[0] === '0' || // has leading zero
+      sub.split('').some(char => !nums.includes(char)) // is not number
+    ) return false;
+    
+    return sub >= 0 && sub <= 255;
+  })
 }
 
 // isValidIP('1a23.45.67.89')
