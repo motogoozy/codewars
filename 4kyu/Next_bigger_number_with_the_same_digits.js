@@ -12,39 +12,44 @@ If no bigger number can be composed using those digits, return -1:
 531 ==> -1
 */
 
-function nextBigger(n) {
-   let nString = n.toString();
+function nextBigger(num) {
+  // create array of digits
+  const digits = num
+    .toString()
+    .split('')
+    .map((s) => parseInt(s));
 
-   function test(t) {
-      for (let i = t.length - 1; i > 0; i--) {
-         if (i - 1 >= 0 && t[i] === t[i - 1]) {
-            continue;
-         }
-         let currentNumber = parseInt(t[i]);
-         for (let x = i - 1; x >= 0; x--) {
-            let compareNumber = parseInt(t[x]);
-            if (compareNumber < currentNumber) {
-               let splitString = t.split('');
-               splitString[x] = t[i];
-               splitString[i] = t[x];
-               let remainder = splitString.splice(x + 1);
-               remainder.sort();
-               let finalArray = splitString.concat(remainder);
-               return parseInt(finalArray.join(''));
-            }
-         }
-      }
-      return -1;
-   }
+  // initialize i to the second to last index
+  let i = digits.length - 2;
+  // search for the element that breaks the ascending order
+  while (i >= 0 && digits[i] >= digits[i + 1]) i--;
+  // if i gets decremented to -1, then the next bigger doesn't exist, we return -1
+  if (i === -1) return i;
 
-   for (let i = nString.length - 1; i >= 0; i--) {
-      let subStr = nString.substr(i);
-      let smallerInt = test(subStr);
-      if (smallerInt !== -1) {
-         return parseInt(nString.substr(0, i) + smallerInt.toString());
-      }
-   }
-   return -1;
+  // we create and initialize j to the last index
+  let j = digits.length - 1;
+  // we search for the first digit that is bigger than digits[i]
+  while (digits[j] <= digits[i]) j--;
+
+  // we swap digits[i] with digits[j]
+  [digits[i], digits[j]] = [digits[j], digits[i]];
+
+  // we reverse the part that starts from i+1
+  let left = i + 1;
+  let right = digits.length - 1;
+  while (left < right) {
+    [digits[left], digits[right]] = [digits[right], digits[left]];
+    left++;
+    right--;
+  }
+
+  // we return digits as an integer
+  return parseInt(digits.map((d) => d.toString()).join(''));
 }
 
-nextBigger(12);
+const a = 513; // 531
+const b = 2017; // 2071
+const c = 6642; // -1
+const d = 1318540; // 1340158
+
+console.log(nextBigger(2017));
