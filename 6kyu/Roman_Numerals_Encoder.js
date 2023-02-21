@@ -23,7 +23,7 @@ Remember that there can't be more than 3 identical symbols in a row.
 More about roman numerals - http://en.wikipedia.org/wiki/Roman_numerals
 */
 
-function solution(num) {
+function encode(num) {
   const roman = {
     'M': 1000,
     'CM': 900,
@@ -41,9 +41,12 @@ function solution(num) {
   };
   let str = '';
 
-  for (let key of Object.keys(roman)) {
-    let count = Math.floor(num / roman[key]);
-    num -= count * roman[key];
+  for (let [key, value] of Object.entries(roman)) {
+    let count = Math.floor(num / value);
+
+    if (!count) continue;
+    
+    num -= count * value;
     str += key.repeat(count);
   }
 
