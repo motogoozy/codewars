@@ -5,14 +5,15 @@ Given a string, detect whether or not it is a pangram. Return True if it is, Fal
 */
 
 function isPangram(str){
+  const lower = str.toLowerCase();
   const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
-  
-  str = str.toLowerCase();
-  const missingChars = alphabet.filter(char => !str.includes(char.toLowerCase()))
-  
-  return missingChars.length === 0;
-}
 
+  for (let i = 0; i < alphabet.length; i++) {
+    if (!lower.includes(alphabet[i])) return false;
+  }
+
+  return true;
+}
 
 isPangram('The quick brown fox jumps over the lazy dog.');
 // isPangram('This is not a pangram.');
