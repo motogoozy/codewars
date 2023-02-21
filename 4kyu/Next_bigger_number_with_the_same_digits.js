@@ -1,12 +1,11 @@
 /*
-You have to create a function that takes a positive integer number and returns the next bigger number formed by the same digits:
+Create a function that takes a positive integer and returns the next bigger number formed by the same digits:
 
 12 ==> 21
 513 ==> 531
 2017 ==> 2071
 144 ==> 414
 If no bigger number can be composed using those digits, return -1:
-
 9 ==> -1
 111 ==> -1
 531 ==> -1
@@ -26,13 +25,15 @@ function nextBigger(num) {
   // if i gets decremented to -1, then the next bigger doesn't exist, we return -1
   if (i === -1) return i;
 
-  // we create and initialize j to the last index
+  // create and initialize j to the last index
   let j = digits.length - 1;
-  // we search for the first digit that is bigger than digits[i]
+  // search for the first digit that is bigger than digits[i]
   while (digits[j] <= digits[i]) j--;
 
-  // we swap digits[i] with digits[j]
-  [digits[i], digits[j]] = [digits[j], digits[i]];
+  // swap digits[i] with digits[j]
+  const tmpI = digits[i];
+  digits[i] = digits[j];
+  digits[j] = tmpI;
 
   // we reverse the part that starts from i+1
   let left = i + 1;
@@ -51,5 +52,6 @@ const a = 513; // 531
 const b = 2017; // 2071
 const c = 6642; // -1
 const d = 1318540; // 1340158
+const e = 111; // -1
 
-console.log(nextBigger(2017));
+console.log(nextBigger(a));
